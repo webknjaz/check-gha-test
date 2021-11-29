@@ -29,7 +29,7 @@ jobs:
       run: echo failure
     - if: cancelled()
       run: echo cancelled
-    - run: echo 'results=${{ needs.*.result }}'
+    - run: echo 'results=${{ fromJSON(needs.*.result) }}'
     - run: exit 0
 
   wait-for-failure:
@@ -44,7 +44,7 @@ jobs:
       run: echo success
     - if: failure()
       run: echo failure
-    - run: echo 'results=${{ needs.*.result }}'
+    - run: echo 'results=${{ fromJSON(needs.*.result) }}'
     - run: exit 0
 
   wait-for-both:
@@ -60,6 +60,7 @@ jobs:
       run: echo success
     - if: cancelled()
       run: echo cancelled
-    - run: echo 'results=${{ needs.*.result }}'
+    - run: echo 'results=${{ fromJSON(needs.*.result) }}'
+    - run: echo "contains=${{ contains(needs.*.result, 'fail') }}"
     - run: exit ${{ needs.*.result }}
 ...
