@@ -42,7 +42,8 @@ jobs:
       run: echo failure
     - if: success()
       run: echo success
-    - run: echo failure=${{ cancelled() }}
+    - if: failure()
+      run: echo failure
     - run: echo 'results=${{ needs.*.result }}'
     - run: exit 0
 
