@@ -23,9 +23,12 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-    - run: echo success=${{ success() }}
-    - run: echo failure=${{ failure() }}
-    - run: echo failure=${{ cancelled() }}
+    - if: success()
+      run: echo success
+    - if: failure()
+      run: echo failure
+    - if: cancelled()
+      run: echo cancelled
     - run: echo 'results=${{ needs.*.result }}'
     - run: exit 0
 
@@ -35,8 +38,10 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-    - run: echo failure=${{ failure() }}
-    - run: echo success=${{ success() }}
+    - if: failure()
+      run: echo failure
+    - if: success()
+      run: echo success
     - run: echo failure=${{ cancelled() }}
     - run: echo 'results=${{ needs.*.result }}'
     - run: exit 0
@@ -48,9 +53,12 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-    - run: echo failure=${{ failure() }}
-    - run: echo success=${{ success() }}
-    - run: echo failure=${{ cancelled() }}
+    - if: failure()
+      run: echo failure
+    - if: success()
+      run: echo success
+    - if: cancelled()
+      run: echo cancelled
     - run: echo 'results=${{ needs.*.result }}'
     - run: exit ${{ needs.*.result }}
 ...
