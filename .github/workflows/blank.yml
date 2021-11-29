@@ -60,7 +60,7 @@ jobs:
       run: echo success
     - if: cancelled()
       run: echo cancelled
-    - run: echo 'results=${{ fromJSON(needs.*.result) }}'
+    - run: echo 'results=${{ toJSON(needs.*.result) }}'
     - run: echo "contains=${{ contains(needs.*.result, 'fail') }}"
     - run: exit ${{ needs.*.result }}
 ...
