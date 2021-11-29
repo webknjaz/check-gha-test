@@ -23,14 +23,11 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-    - if: success()
-      run: echo success
-    - if: failure()
-      run: echo failure
-    - if: cancelled()
-      run: echo cancelled
-    - run: echo 'results=${{ fromJSON(needs.*.result) }}'
-    - run: exit 0
+    - run: echo 'results=${{ toJSON(needs.*.result) }}'
+    - run: |
+        import os
+        os.exit(int(not all(dependency_result == 'success' for dependency_result in ${{ toJSON(needs.*.result) }})))
+      shell: python
 
   wait-for-failure:
     needs:
@@ -38,14 +35,11 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-    - if: failure()
-      run: echo failure
-    - if: success()
-      run: echo success
-    - if: failure()
-      run: echo failure
-    - run: echo 'results=${{ fromJSON(needs.*.result) }}'
-    - run: exit 0
+    - run: echo 'results=${{ toJSON(needs.*.result) }}'
+    - run: |
+        import os
+        os.exit(int(not all(dependency_result == 'success' for dependency_result in ${{ toJSON(needs.*.result) }})))
+      shell: python
 
   wait-for-both:
     needs:
@@ -54,13 +48,9 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-    - if: failure()
-      run: echo failure
-    - if: success()
-      run: echo success
-    - if: cancelled()
-      run: echo cancelled
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
-    - run: echo "contains=${{ contains(needs.*.result, 'fail') }}"
-    - run: exit ${{ needs.*.result }}
+    - run: |
+        import os
+        os.exit(int(not all(dependency_result == 'success' for dependency_result in ${{ toJSON(needs.*.result) }})))
+      shell: python
 ...
