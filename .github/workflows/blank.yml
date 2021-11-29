@@ -1,0 +1,56 @@
+---
+name: check-all
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  failing-job:
+    runs-on: ubuntu-latest
+    steps:
+    - run: exit 1
+
+  succeeding-job:
+    runs-on: ubuntu-latest
+    steps:
+    - run: exit 0
+
+  wait-for-success:
+    needs:
+    - succeeding-job
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo success=${{ success() }}
+    - run: echo failure=${{ failure() }}
+    - run: echo failure=${{ cancelled() }}
+    - run: echo 'results=${{ needs.*.result }}'
+    - run: exit 0
+
+  wait-for-failure:
+    needs:
+    - failing-job
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo failure=${{ failure() }}
+    - run: echo success=${{ success() }}
+    - run: echo failure=${{ cancelled() }}
+    - run: echo 'results=${{ needs.*.result }}'
+    - run: exit 0
+
+  wait-for-both:
+    needs:
+    - failing-job
+    - succeeding-job
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo failure=${{ failure() }}
+    - run: echo success=${{ success() }}
+    - run: echo failure=${{ cancelled() }}
+    - run: echo 'results=${{ needs.*.result }}'
+    - run: exit ${{ needs.*.result }}
+...
