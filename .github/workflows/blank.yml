@@ -25,8 +25,8 @@ jobs:
     steps:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
     - run: |
-        import os
-        os.exit(int(not all(dependency_result == 'success' for dependency_result in ${{ toJSON(needs.*.result) }})))
+        import sys
+        sys.exit(int(not all(dependency_result == 'success' for dependency_result in ${{ toJSON(needs.*.result) }})))
       shell: python
 
   wait-for-failure:
@@ -37,8 +37,8 @@ jobs:
     steps:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
     - run: |
-        import os
-        os.exit(int(not all(dependency_result == 'success' for dependency_result in ${{ toJSON(needs.*.result) }})))
+        import sys
+        sys.exit(int(not all(dependency_result == 'success' for dependency_result in ${{ toJSON(needs.*.result) }})))
       shell: python
 
   wait-for-both:
@@ -50,7 +50,7 @@ jobs:
     steps:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
     - run: |
-        import os
-        os.exit(int(not all(dependency_result == 'success' for dependency_result in ${{ toJSON(needs.*.result) }})))
+        import sys
+        sys.exit(int(not all(dependency_result == 'success' for dependency_result in ${{ toJSON(needs.*.result) }})))
       shell: python
 ...
