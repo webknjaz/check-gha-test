@@ -17,9 +17,15 @@ jobs:
     steps:
     - run: exit 0
 
+  skipped-job:
+    runs-on: ubuntu-latest
+    steps:
+    - run: exit 0
+
   wait-for-success:
     needs:
     - succeeding-job
+    - skipped-job
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -32,6 +38,7 @@ jobs:
   wait-for-failure:
     needs:
     - failing-job
+    - skipped-job
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -45,6 +52,7 @@ jobs:
     needs:
     - failing-job
     - succeeding-job
+    - skipped-job
     if: always()
     runs-on: ubuntu-latest
     steps:
