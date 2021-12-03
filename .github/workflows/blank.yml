@@ -71,6 +71,21 @@ jobs:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
     - uses: re-actors/alls-green@main
       with:
-        allowed-failures: ${{ toJSON(['failing-job', 'skipped-job']) }}
+        allowed-failures: >-
+          ["failing-job", "skipped-job"]
+        jobs: ${{ toJSON(needs) }}
+
+  allow-some-failures-str:
+    needs:
+    - failing-job
+    - succeeding-job
+    - skipped-job
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo 'results=${{ toJSON(needs.*.result) }}'
+    - uses: re-actors/alls-green@main
+      with:
+        allowed-failures: failing-job, skipped-job
         jobs: ${{ toJSON(needs) }}
 ...
