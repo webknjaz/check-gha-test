@@ -31,10 +31,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
-    - run: |
-        import sys
-        sys.exit(int(not all(dependency_result == 'success' for dependency_result in ${{ toJSON(needs.*.result) }})))
-      shell: python
+    - uses: re-actors/alls-green@main
+      with:
+        jobs: ${{ needs }}
 
   wait-for-failure:
     needs:
@@ -44,10 +43,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
-    - run: |
-        import sys
-        sys.exit(int(not all(dependency_result == 'success' for dependency_result in ${{ toJSON(needs.*.result) }})))
-      shell: python
+    - uses: re-actors/alls-green@main
+      with:
+        jobs: ${{ needs }}
 
   wait-for-both:
     needs:
@@ -58,8 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
-    - run: |
-        import sys
-        sys.exit(int(not all(dependency_result == 'success' for dependency_result in ${{ toJSON(needs.*.result) }})))
-      shell: python
+    - uses: re-actors/alls-green@main
+      with:
+        jobs: ${{ needs }}
 ...
