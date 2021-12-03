@@ -33,7 +33,7 @@ jobs:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
     - uses: re-actors/alls-green@main
       with:
-        jobs: ${{ fromJSON(needs) }}
+        jobs: ${{ toJSON(needs) }}
 
   wait-for-failure:
     needs:
@@ -45,7 +45,7 @@ jobs:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
     - uses: re-actors/alls-green@main
       with:
-        jobs: ${{ fromJSON(needs) }}
+        jobs: ${{ toJSON(needs) }}
 
   wait-for-both:
     needs:
@@ -58,5 +58,5 @@ jobs:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
     - uses: re-actors/alls-green@main
       with:
-        jobs: ${{ fromJSON(needs) }}
+        jobs: ${{ toJSON(needs) }}
 ...
