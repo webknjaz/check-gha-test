@@ -35,6 +35,7 @@ jobs:
     steps:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
     - uses: re-actors/alls-green@unstable/v1
+      id: check
       with:
         jobs: ${{ toJSON(needs) }}
     - run: echo 'outputs=${{ toJSON(steps.check.outputs) }}'
@@ -49,6 +50,7 @@ jobs:
     steps:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
     - uses: re-actors/alls-green@unstable/v1
+      id: check
       with:
         jobs: ${{ toJSON(needs) }}
     - run: echo 'outputs=${{ toJSON(steps.check.outputs) }}'
@@ -64,6 +66,7 @@ jobs:
     steps:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
     - uses: re-actors/alls-green@unstable/v1
+      id: check
       with:
         jobs: ${{ toJSON(needs) }}
     - run: echo 'outputs=${{ toJSON(steps.check.outputs) }}'
@@ -79,6 +82,7 @@ jobs:
     steps:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
     - uses: re-actors/alls-green@unstable/v1
+      id: check
       with:
         allowed-failures: >-
           ["failing-job", "skipped-job"]
