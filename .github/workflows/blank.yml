@@ -37,6 +37,8 @@ jobs:
     - uses: re-actors/alls-green@unstable/v1
       with:
         jobs: ${{ toJSON(needs) }}
+    - run: echo 'outputs=${{ toJSON(steps.check.outputs) }}'
+      if: always()
 
   wait-for-failure:
     needs:
@@ -49,6 +51,8 @@ jobs:
     - uses: re-actors/alls-green@unstable/v1
       with:
         jobs: ${{ toJSON(needs) }}
+    - run: echo 'outputs=${{ toJSON(steps.check.outputs) }}'
+      if: always()
 
   wait-for-both:
     needs:
@@ -62,6 +66,8 @@ jobs:
     - uses: re-actors/alls-green@unstable/v1
       with:
         jobs: ${{ toJSON(needs) }}
+    - run: echo 'outputs=${{ toJSON(steps.check.outputs) }}'
+      if: always()
 
   allow-some-failures:
     needs:
@@ -77,6 +83,8 @@ jobs:
         allowed-failures: >-
           ["failing-job", "skipped-job"]
         jobs: ${{ toJSON(needs) }}
+    - run: echo 'outputs=${{ toJSON(steps.check.outputs) }}'
+      if: always()
 
   allow-some-failures-str:
     needs:
@@ -88,7 +96,10 @@ jobs:
     steps:
     - run: echo 'results=${{ toJSON(needs.*.result) }}'
     - uses: re-actors/alls-green@unstable/v1
+      id: check
       with:
         allowed-failures: failing-job, skipped-job
         jobs: ${{ toJSON(needs) }}
+    - run: echo 'outputs=${{ toJSON(steps.check.outputs) }}'
+      if: always()
 ...
