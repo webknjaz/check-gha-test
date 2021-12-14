@@ -106,4 +106,39 @@ jobs:
         jobs: ${{ toJSON(needs) }}
     - run: echo 'outputs=${{ toJSON(steps.check.outputs) }}'
       if: always()
+
+  allow-failures-n-skips:
+    needs:
+    - failing-job
+    - succeeding-job
+    - skipped-job
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo 'results=${{ toJSON(needs.*.result) }}'
+    - uses: re-actors/alls-green@unstable/v1
+      id: check
+      with:
+        allowed-failures: failing-job
+        allowed-skips: skipped-job
+        jobs: ${{ toJSON(needs) }}
+    - run: echo 'outputs=${{ toJSON(steps.check.outputs) }}'
+      if: always()
+
+  allow-skips:
+    needs:
+    - failing-job
+    - succeeding-job
+    - skipped-job
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo 'results=${{ toJSON(needs.*.result) }}'
+    - uses: re-actors/alls-green@unstable/v1
+      id: check
+      with:
+        allowed-skips: failing-job, skipped-job
+        jobs: ${{ toJSON(needs) }}
+    - run: echo 'outputs=${{ toJSON(steps.check.outputs) }}'
+      if: always()
 ...
