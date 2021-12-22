@@ -28,6 +28,7 @@ jobs:
 
   partially-failing-partially-skipped-matrix:
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.rc == 1 && true || false }}
     strategy:
       matrix:
         rc:
