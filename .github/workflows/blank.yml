@@ -28,7 +28,7 @@ jobs:
 
   partially-failing-partially-skipped-matrix:
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.rc == '1' && true || false }}
+    continue-on-error: ${{ matrix.rc == '1' }}
     strategy:
       matrix:
         rc:
@@ -36,7 +36,7 @@ jobs:
         - 1
         - 2
     steps:
-    - if: ${{ matrix.rc == '2' && false || true }}
+    - if: matrix.rc != '2'
       run: exit ${{ matrix.rc }}
 
   wait-for-success:
