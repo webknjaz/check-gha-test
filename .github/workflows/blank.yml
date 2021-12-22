@@ -26,6 +26,18 @@ jobs:
     steps:
     - run: exit 0
 
+  partially-failing-partially-skipped-matrix:
+    if: ${{ matrix.rc == 2 && true || false }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rc:
+        - 0
+        - 1
+        - 2
+    steps:
+    - run: exit 1
+
   wait-for-success:
     needs:
     - succeeding-job
@@ -138,6 +150,25 @@ jobs:
       id: check
       with:
         allowed-skips: failing-job, skipped-job
+        jobs: ${{ toJSON(needs) }}
+    - run: echo 'outputs=${{ toJSON(steps.check.outputs) }}'
+      if: always()
+
+  allow-partials:
+    needs:
+    - failing-job
+    - succeeding-job
+    - skipped-job
+    - partially-failing-partially-skipped-matrix
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo 'results=${{ toJSON(needs.*.result) }}'
+    - uses: re-actors/alls-green@unstable/v1
+      id: check
+      with:
+        allowed-failures: failing-job
+        allowed-skips: skipped-job
         jobs: ${{ toJSON(needs) }}
     - run: echo 'outputs=${{ toJSON(steps.check.outputs) }}'
       if: always()
